@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+
+access_account_gst_detail_tax_reports,gst.detail.account.tax.reports,model_gst_detail_account_tax_reports,,1,1,1,1
+access_account_gst_tax_reports,gst.account.tax.reports,model_gst_account_tax_reports,,1,1,1,1
+access_account_gst_detail_tax_reports1,gst.detail.account.tax.reports1,model_gst_detail_account_tax_reports1,,1,1,1,1

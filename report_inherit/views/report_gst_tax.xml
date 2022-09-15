@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="gst_report_tax">
+        <t t-call="web.html_container">
+            <t t-set="data_report_margin_top" t-value="12"/>
+            <t t-set="data_report_header_spacing" t-value="9"/>
+            <t t-set="data_report_dpi" t-value="110"/>
+            <t t-call="web.internal_layout">
+                <div class="page" style="font-size: 20px !important;">
+                   <center><h3> GST Form 5</h3></center>
+                    <center><h3> GOODS AND SERVICES TAX RETURN</h3></center>
+                    <div class="row>">
+                        <strong>Accounting period covered by this return</strong>
+                    </div>
+                    <div class="row">
+                        <div class="col-4">
+                            <t t-if="data['date_from']"><strong>From:</strong> <span t-esc="data['date_from']" t-options='{"widget": "date","format": "dd-MM-yyyy"}'/></t>
+                        </div>
+                         <div class="col-4">
+                            <t t-if="data['date_to']"><strong>To:</strong> <span t-esc="data['date_to']" t-options='{"widget": "date","format": "dd-MM-yyyy"}'/></t>
+                        </div>
+                    </div>
+                    <br></br>
+                    <table class="table table-condensed">
+                        <thead>
+                            <!--<tr>
+
+                                <th>Sale</th>
+                                <th class="text-right">Net</th>
+                                <th class="text-right">Tax</th>
+
+                            </tr>-->
+                        </thead>
+                        <!--<tr t-foreach="lines['sale']" t-as="line">
+                            <td><span t-esc="line.get('name')"/></td>
+                            <td class="text-right"><span t-att-style="style" t-esc="line.get('net')" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/></td>
+                            <td class="text-right"><span t-att-style="style" t-esc="line.get('tax')" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/></td>
+                        </tr>
+                        <tr><td colspan="3"><strong>Purchase</strong></td>
+                        </tr>
+                        <tr t-foreach="lines['purchase']" t-as="line">
+                            <td><span t-esc="line.get('name')"/></td>
+                            <td class="text-right"><span t-att-style="style" t-esc="line.get('net')" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/></td>
+                            <td class="text-right"><span t-att-style="style" t-esc="line.get('tax')" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/></td>
+                        </tr>-->
+
+                        <tr t-foreach="lines['Total value of Standard Rated Supplies']" t-as="line">
+                            <td><span t-esc="line.get('description')"/></td>
+                            <td class="text-right"><span t-att-style="style" t-esc="line.get('net')" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/></td>
+                            <td class="text-right"><span t-att-style="style" >(1)</span></td>
+                        </tr>
+
+                        <tr t-foreach="lines['Total Value of Zero Rated Supplies']" t-as="line">
+                            <td><span t-esc="line.get('description')"/></td>
+                            <td class="text-right"><span t-att-style="style" t-esc="line.get('net')" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/></td>
+                            <td class="text-right"><span t-att-style="style" >(2)</span></td>
+                        </tr>
+
+                        <tr t-foreach="lines['Total Value of Exempt Supplies']" t-as="line">
+                            <td><span t-esc="line.get('description')"/></td>
+                            <td class="text-right"><span t-att-style="style" t-esc="line.get('net')" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/></td>
+                            <td class="text-right"><span t-att-style="style" >(3)</span></td>
+                        </tr>
+
+                        <tr t-foreach="lines['Total Value of (1) + (2) + (3)']" t-as="line">
+                            <td><span t-esc="line.get('description')"/></td>
+                            <td class="text-right"><span t-att-style="style" t-esc="line.get('net')" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/></td>
+                            <td class="text-right"><span t-att-style="style" >(4)</span></td>
+                        </tr>
+
+                        <tr t-foreach="lines['Total value of Tax purchasable']" t-as="line">
+                            <td><span t-esc="line.get('description')"/></td>
+                            <td class="text-right"><span t-att-style="style" t-esc="line.get('net')" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/></td>
+                            <td class="text-right"><span t-att-style="style" >(5)</span></td>
+                        </tr>
+                        <tr t-foreach="lines['OTD']" t-as="line">
+                            <td><span t-esc="line.get('description')"/></td>
+                            <td class="text-right"><span t-att-style="style" t-esc="line.get('tax')" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/></td>
+                            <td class="text-right"><span t-att-style="style" >(6)</span></td>
+                        </tr>
+                        <tr t-foreach="lines['Input tax and refund claimed']" t-as="line">
+                            <td><span t-esc="line.get('description')"/></td>
+                            <td class="text-right"><span t-att-style="style" t-esc="line.get('tax')" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/></td>
+                            <td class="text-right"><span t-att-style="style" >(7)</span></td>
+                        </tr>
+
+                         <tr t-foreach="lines['Net GST to be paid to IRAS']" t-as="line">
+                            <td><span t-esc="line.get('description')"/></td>
+                            <td class="text-right"><span t-att-style="style" t-esc="line.get('tax')" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/></td>
+                            <td class="text-right"><span t-att-style="style" >(8)</span></td>
+                        </tr>
+
+
+                    </table>
+                </div>
+            </t>
+        </t>
+    </template>
+</odoo>

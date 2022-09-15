@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- QWeb Reports -->
+            <report
+            id="action_report_account_tax"
+            model="account.tax.reports"
+            string="Tax Report"
+            report_type="qweb-pdf"
+            name="report_inherit.report_tax"
+            file="report_inherit.report_tax"
+            />
+
+            <report
+            id="action_gst_report_account_tax"
+            model="gst.account.tax.reports"
+            string="Tax Report"
+            report_type="qweb-pdf"
+            name="report_inherit.gst_report_tax"
+            file="report_inherit.gst_report_tax"
+            />
+
+    </data>
+</odoo>

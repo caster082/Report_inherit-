@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="gst_detail_report_tax1">
+        <t t-call="web.html_container">
+            <t t-set="data_report_margin_top" t-value="12"/>
+            <t t-set="data_report_header_spacing" t-value="9"/>
+            <t t-set="data_report_dpi" t-value="110"/>
+            <t t-call="web.internal_layout">
+                <div class="page" style="font-size: 20px !important;">
+                    <center><h3> GST Details <t t-if="data['tax_type'] == 'sale'" >[Output Tax]</t> <t t-if="data['tax_type'] == 'purchase'" >[Input Tax]</t>
+                    </h3></center>
+                    <center><h3> GOODS AND SERVICES TAX RETURN</h3></center>
+                    <div class="row>">
+                        <strong>Accounting period covered by this return</strong>
+                    </div>
+                    <div class="row">
+                        <div class="col-4">
+                            <t t-if="data['date_from']"><strong>From:</strong> <span t-esc="data['date_from']" t-options='{"widget": "date","format": "dd-MM-yyyy"}'/></t>
+                        </div>
+                         <div class="col-4">
+                            <t t-if="data['date_to']"><strong>To:</strong> <span t-esc="data['date_to']" t-options='{"widget": "date","format": "dd-MM-yyyy"}'/></t>
+                        </div>
+                    </div>
+                    <br></br>
+                    <table class="table table-condensed">
+                        <thead>
+                            <tr>
+
+                                <th>Date</th>
+                                <th>Journal</th>
+                                <th>Ref.#</th>
+                                <th>Tax Name</th>
+                                <th class="text-right">Transaction Amount</th>
+                                <th class="text-right">Tax Amount</th>
+
+                            </tr>
+                        </thead>
+                        <t t-if="data['tax_type'] == 'sale'">
+                             <t t-set="grand_tax_total" t-value="0"/>
+                             <t t-set="grand_net_total" t-value="0"/>
+
+                            <t t-foreach="lines['sale_tax']" t-as="tax">
+                                <t t-set="tax_total" t-value="0"/>
+                                <t t-set="net_total" t-value="0"/>
+
+                                <tr>
+                                    <td><strong><span t-esc="tax.get('name')"/></strong></td>
+                                </tr>
+                        <t t-set="sale_lines" t-value="sorted(lines['sale'], key=lambda x: x.get('date'))"/>
+
+                        <t t-foreach="sale_lines" t-as="line">
+                            <t t-if="line.get('t_id') == tax.get('id')">
+                                <t t-set="tax_total" t-value="tax_total+line.get('tax')"/>
+                                <t t-set="net_total" t-value="net_total+line.get('net')"/>
+                                <t t-set="grand_tax_total" t-value="grand_tax_total+line.get('tax')"/>
+                                <t t-set="grand_net_total" t-value="grand_net_total+line.get('net')"/>
+                            <tr>
+                                <td><span t-esc="line.get('date')" t-options='{"widget": "date","format": "dd-MM-yyyy"}'/></td>
+                                <td><span t-esc="line.get('journal')"/></td>
+                                <td><span t-esc="line.get('entry')"/></td>
+                                <td><span t-esc="line.get('name')"/></td>
+                                <td class="text-right"><span t-att-style="style" t-esc="line.get('net') * (-1)" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/></td>
+
+                                <td class="text-right"><span t-att-style="style" t-esc="line.get('tax') * (-1)" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/></td>
+                            </tr>
+                                </t>
+                                </t>
+
+                                <tr>
+                                    <td><span/></td>
+                                    <td><span/></td>
+                                    <td><span/></td>
+                                    <td><strong>Total</strong></td>
+                                    <td class="text-right"><strong><span t-att-style="style" t-esc="net_total * (-1)" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/></strong></td>
+                                    <td class="text-right"><strong><span t-att-style="style" t-esc="tax_total * (-1)" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/></strong></td>
+                                </tr>
+                            </t>
+
+                            <tr>
+                                    <td><span/></td>
+                                    <td><span/></td>
+                                    <td><span/></td>
+                                    <td><strong>Grand Total</strong></td>
+                                    <td class="text-right"><strong><span t-att-style="style" t-esc="grand_net_total * (-1)" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/></strong></td>
+                                    <td class="text-right"><strong><span t-att-style="style" t-esc="grand_tax_total * (-1)" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/></strong></td>
+                                </tr>
+
+                        </t>
+
+
+                         <t t-if="data['tax_type'] == 'purchase'">
+                         <t t-set="grand_tax_total" t-value="0"/>
+                         <t t-set="grand_net_total" t-value="0"/>
+
+                            <t t-foreach="lines['purchase_tax']" t-as="tax">
+                                <t t-set="tax_total" t-value="0"/>
+                                <t t-set="net_total" t-value="0"/>
+                                <tr>
+                                    <td><strong><span t-esc="tax.get('name')"/></strong></td>
+                                </tr>
+                        <t t-set="purchase_lines" t-value="sorted(lines['purchase'], key=lambda x: x.get('date'))"/>
+
+                        <t t-foreach="purchase_lines" t-as="line">
+                            <t t-if="line.get('t_id') == tax.get('id')">
+                                <t t-set="tax_total" t-value="tax_total+line.get('tax')"/>
+                                <t t-set="net_total" t-value="net_total+line.get('net')"/>
+                                <t t-set="grand_tax_total" t-value="grand_tax_total+line.get('tax')"/>
+                                <t t-set="grand_net_total" t-value="grand_net_total+line.get('net')"/>
+                            <tr>
+                                <td><span t-esc="line.get('date')" t-options='{"widget": "date","format": "dd-MM-yyyy"}'/></td>
+                                <td><span t-esc="line.get('journal')"/></td>
+                                <td><span t-esc="line.get('entry')"/></td>
+                                <td><span t-esc="line.get('name')"/></td>
+                                <td class="text-right"><span t-att-style="style" t-esc="line.get('net')" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/></td>
+
+                                <td class="text-right"><span t-att-style="style" t-esc="line.get('tax')" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/></td>
+                            </tr>
+                                </t>
+                                </t>
+
+                                <tr>
+                                    <td><span/></td>
+                                    <td><span/></td>
+                                    <td><span/></td>
+                                    <td><strong>Total</strong></td>
+                                    <td class="text-right"><strong><span t-att-style="style" t-esc="net_total" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/></strong></td>
+                                    <td class="text-right"><strong><span t-att-style="style" t-esc="tax_total" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/></strong></td>
+                                </tr>
+                            </t>
+
+                             <tr>
+                                    <td><span/></td>
+                                    <td><span/></td>
+                                    <td><span/></td>
+                                    <td><strong>Grand Total</strong></td>
+                                    <td class="text-right"><strong><span t-att-style="style" t-esc="grand_net_total" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/></strong></td>
+                                    <td class="text-right"><strong><span t-att-style="style" t-esc="grand_tax_total" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/></strong></td>
+                                </tr>
+
+                        </t>
+                    </table>
+                </div>
+            </t>
+        </t>
+    </template>
+</odoo>

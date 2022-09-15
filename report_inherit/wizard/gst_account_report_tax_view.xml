@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="gst_accounting_tax_report_view" model="ir.ui.view">
+        <field name="name">GST Tax Reports</field>
+        <field name="model">gst.account.tax.reports</field>
+        <field name="arch" type="xml">
+            <form string="Report Options">
+            <group col="4">
+                <field name="fiscal_year_from" required="1"/>
+                <field name="fiscal_year_to" required="1"/>
+            </group>
+            <group col="4">
+                <field name="period_from"/>
+                <field name="period_to"/>
+            </group>
+            <group col="4" attrs="{'invisible':['&amp;',('fiscal_year_from', '=', False),('fiscal_year_to', '=', False)]}">
+                <field name="date_from" options="{'format': 'DD/MM/YYYY'}" disabled="1"/>
+                <field name="date_to" options="{'format': 'DD/MM/YYYY'}" disabled="1"/>
+            </group>
+            <footer>
+                <button name="check_report" string="Print" type="object" default_focus="1" class="oe_highlight"/>
+                <button string="Cancel" class="btn btn-secondary" special="cancel" />
+            </footer>
+        </form>
+        </field>
+    </record>
+
+    <record id="action_gst_account_tax_report" model="ir.actions.act_window">
+        <field name="name">GST Tax Reports</field>
+        <field name="res_model">gst.account.tax.reports</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="gst_accounting_tax_report_view"/>
+        <field name="context">{}</field>
+        <field name="target">new</field>
+    </record>
+
+    <!--<menuitem id="menu_account_report"  sequence="140" name="Tax Report" action="action_account_tax_report" parent="menu_finance_legal_statement" />-->
+    <menuitem id="menu_account_report_gst"  sequence="142" name="GST Tax Report" action="action_gst_account_tax_report" parent="skit_account_reports.menu_finance_legal_statement" />
+
+</odoo>
