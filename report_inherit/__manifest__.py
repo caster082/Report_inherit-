@@ -17,7 +17,6 @@
     'website': 'https://www.odoomates.tech',
     'author': 'Casta, Myat Mon Cho',
     'maintainer': 'Casta, Myat Mon Cho',
-    'license': 'LGPL-3',
     'support': 'khantsithuaung082@gmail.com',
     'depends': ['base','base_accounting_kit', 'account','skit_financial_form','skit_account_reports','account_fiscal_year_period',],
 
